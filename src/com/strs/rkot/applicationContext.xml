@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       >
+
+    <bean id="messageFactory" class="org.springframework.ws.soap.axiom.AxiomSoapMessageFactory" />
+    
+    <bean id="client" abstract="true">
+        <constructor-arg ref="messageFactory"/>
+        <property name="marshaller" ref="marshaller"/>
+		<property name="unmarshaller" ref="marshaller"/>
+        <property name="defaultUri" value="http://localhost:2718"/>
+    </bean>
+
+    <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPaths">
+            <list>
+                <value>com.streamserve.schemas._public._1</value>
+                <value>com.streamserve.schemas.webservice.interfaces.document._1</value>
+                <value>com.streamserve.schemas.webservice.interfaces.documentapproval._1</value>
+                <value>com.streamserve.schemas.webservice.interfaces.documentcontent.base64._1</value>
+                <value>com.streamserve.schemas.webservice.interfaces.documentcontent.mtom._1</value>
+                <value>com.streamserve.schemas.webservice.interfaces.jobsubmitcontent.base64._1</value>
+                <value>com.streamserve.schemas.webservice.interfaces.jobsubmitcontent.mtom._1</value>
+                <value>com.streamserve.schemas.webservice.interfaces.schema._1</value>
+                <value>com.streamserve.schemas.webservice.interfaces.servicedirectory._1</value>
+                <value>com.streamserve.schemas.webservice.types.content.base64._1</value>
+                <value>com.streamserve.schemas.webservice.types.content.mtom._1</value>
+                <value>com.streamserve.schemas.webservice.types.object._1</value>
+                <value>com.streamserve.schemas.webservice.types.query._1</value>
+                <value>com.streamserve.schemas.webservice.types.query.servicedirectory._1</value>
+                <value>com.streamserve.schemas.webservice.types.servicedirectory._1</value>
+                <value>org.w3._2004._08.xop.include</value>
+                <value>org.w3._2005._05.xmlmime</value>
+            </list>
+        </property>
+        <property name="mtomEnabled" value="true"/>
+    </bean>
+
+    
+    <bean id="servicesService" class="com.strs.rkot.ServicesServiceAxiomImpl" parent="client" />
+    <bean id="jobSubmitService" class="com.strs.rkot.JobSubmitServiceAxiomImpl" parent="client" />
+</beans>
